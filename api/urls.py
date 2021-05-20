@@ -1,11 +1,7 @@
-from django.urls import include, path
-from rest_framework import routers
+from django.urls import path
 
 from api import views
 
-router = routers.DefaultRouter()
-router.register(r'solve', views.WPMSSolver)
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('solve', views.WPMSSolverView.as_view()),
 ]

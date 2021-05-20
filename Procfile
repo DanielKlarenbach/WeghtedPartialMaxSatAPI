@@ -1,0 +1,1 @@
+web: gunicorn WMP1Api.wsgi

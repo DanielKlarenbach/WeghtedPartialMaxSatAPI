@@ -1,10 +1,11 @@
 # Create your tests here.
 
 from django.test import TestCase
+from pysat.formula import WCNF
 from rest_framework.exceptions import ValidationError
 
 from api.models import Clause
-from api.sat_based_wmps_solver import validate_and_return_wcnf
+from api.sat_based_wmps_solver import validate_and_return_wcnf, wmp1
 
 
 class ValidateAndReturnWCNFTestCase(TestCase):
@@ -53,3 +54,31 @@ class ValidateAndReturnWCNFTestCase(TestCase):
                         clause_data in clauses]}
 
         self.assertRaises(ValidationError, validate_and_return_wcnf, request_data)
+
+class WMP1TestCase(TestCase):
+
+    def test_wmp1(self):
+        formula = WCNF()
+        formula.append([1], weight=1)
+        formula.append([2], weight=1)
+        formula.append([3], weight=1)
+        formula.append([4], weight=1)
+        formula.append([5], weight=1)
+        formula.append([-1, -2])
+        formula.append([-2, -3])
+        formula.append([-3, -4])
+        formula.append([-4, -5])
+
+        result_cost, result_solution, result_final_soft_clauses, result_final_hard_clauses = wmp1(solver_name='glucose4', formula=formula)
+        expected_cost = 2
+        expected_solution = [1, -2, 3, -4, 5, -6, 7, -8, 9]
+        expected_final_soft_clauses = [[5], [1, 6], [2, 7], [3, 8], [4, 9]]
+        expected_final_hard_clauses = [[-1, -2], [-2, -3], [-3, -4], [-4, -5], [6, 7], [-6, -7], [8, 9], [-8, -9]]
+
+        self.assertEqual(result_cost,expected_cost)
+        self.assertListEqual(result_solution,expected_solution)
+        self.assertListEqual(result_final_soft_clauses,expected_final_soft_clauses)
+        self.assertListEqual(result_final_hard_clauses,expected_final_hard_clauses)
+
+
+

@@ -1,6 +1,6 @@
-
-def validate_wcnf(wcnf):
+def validate_and_return_wcnf(wcnf):
     pass
 
-def wmp1(solver_name,formula):
+
+def wmp1(solver_name, formula):
     pass

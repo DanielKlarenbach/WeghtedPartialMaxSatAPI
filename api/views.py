@@ -1,10 +1,8 @@
-from django.shortcuts import render
-
 # Create your views here.
 from rest_framework.views import APIView
 
 
-class WPMSSolver(APIView):
+class WPMSSolverView(APIView):
 
-    def post(self,request,format=None):
+    def post(self, request, format=None):
         pass

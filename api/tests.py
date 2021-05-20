@@ -2,7 +2,6 @@
 
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
-from rest_framework.renderers import JSONRenderer
 
 from api.models import Clause
 from api.sat_based_wmps_solver import validate_and_return_wcnf
@@ -27,7 +26,7 @@ class ValidateAndReturnWCNFTestCase(TestCase):
     def test_validate_and_return_wcnf_with_clause_with_invalid_variable_type(self):
         clause_with_invalid_variable_type = ([2.5213], 2)
         clauses = [([1], 1), clause_with_invalid_variable_type, ([3], 3), ([-1, -2], 0), ([1, -3], 0),
-                        ([2, -3], 0)]
+                   ([2, -3], 0)]
         request_data = {'clauses': [{'variables': clause_data[0], 'weight': clause_data[1]} for clause_data in clauses]}
 
         self.assertRaises(ValidationError, validate_and_return_wcnf, request_data)
